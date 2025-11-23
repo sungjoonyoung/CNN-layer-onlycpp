@@ -8,6 +8,9 @@ only using vector, iostream lib
     - inner product
     - coordinate
     - auto coordinate for NN (insert Bias Unit automatically)
-  - Activation function
+<!--
+      - Activation function
+-->
+  
 
-- [XO-judge](https://github.com/sungjoonyoung/CNN-layer-onlycpp/tree/main/XO_judge)
+- (ing) [XO-judge](https://github.com/sungjoonyoung/CNN-layer-onlycpp/tree/main/XO_judge)
