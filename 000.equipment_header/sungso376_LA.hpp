@@ -1,3 +1,11 @@
+/*
+Linear Algebra + some math
+
+inner product
+coordinate
+exponential
+*/
+
 #include<iostream>
 #include<vector>
 using namespace std;

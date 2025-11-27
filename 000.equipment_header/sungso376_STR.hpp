@@ -1,3 +1,11 @@
+/*
+for data parsing
+
+string "x,xx,x" -> vector{x,xx,x}
+or
+vector{xx,xxx,x} -> "xx,xxx,x"
+*/
+
 #include<iostream>
 #include<vector>
 using namespace std;
