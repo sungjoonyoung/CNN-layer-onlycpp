@@ -59,6 +59,20 @@ auto NN_coordinate(vector<T1>& a, vector<vector<T2>>& basis)->vector<decltype(a[
     return answer;
 }
 
+//익스뽀낸셜! 근데 10까지만 근사.
+template <typename T1>
+double exp(T1 e){
+    //m/n
+    double m=1;
+    double n=1;
+    double answer=1;
+    for(int i=1;i<10;i++){
+        m*=e;
+        n*=i;
+        answer+=m/n;
+    }
+    return answer;
+}
 
 // // 또는 C++11 이후의 트레일링 반환(Trailing return) 구문을 사용하여
 // // 반환형을 더 유연하게 지정할 수도 있습니다.
