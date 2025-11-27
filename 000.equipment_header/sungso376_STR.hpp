@@ -12,6 +12,7 @@ using namespace std;
 
 //파싱
 // template <typename T1>
+// string "x,xx,x" -> vector{x,xx,x}
 auto string_pasing(string &a) {
     vector<string> data;
     string in="";
@@ -27,6 +28,7 @@ auto string_pasing(string &a) {
     return data;
 }
 
+// vector{xx,xxx,x} -> "xx,xxx,x"
 template <typename T1>
 auto data_to_string(vector<T1> &v){
     string out = "";
