@@ -12,7 +12,8 @@ only using vector, iostream lib
   - Activation function
     - sigmoid
     - ReLU
-  - STR
+    - derivative
+  - String (for data pasing)
     - string "x,xx,x" -> vector{x,xx,x}
     - vector{xx,xxx,x} -> "xx,xxx,x"
   
