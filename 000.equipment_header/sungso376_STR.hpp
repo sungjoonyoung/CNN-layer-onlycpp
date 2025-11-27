@@ -4,7 +4,7 @@ using namespace std;
 
 //파싱
 // template <typename T1>
-auto string_pasing(string a) {
+auto string_pasing(string &a) {
     vector<string> data;
     string in="";
     for(int i=0;i<a.size();i++){
@@ -17,6 +17,16 @@ auto string_pasing(string a) {
     }
     if(in!="")data.push_back(in);
     return data;
+}
+
+template <typename T1>
+auto data_to_string(vector<T1> &v){
+    string out = "";
+    for(auto s:v){
+        out+=to_string(s);
+        out+=",";
+    }
+    return out;
 }
 
 // //파싱
