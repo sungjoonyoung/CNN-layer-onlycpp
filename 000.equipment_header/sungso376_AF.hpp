@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include<sungso376_LA.hpp>
 using namespace std;
 
 //sigmod
