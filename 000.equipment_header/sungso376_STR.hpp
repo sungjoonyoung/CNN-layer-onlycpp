@@ -39,6 +39,22 @@ auto data_to_string(vector<T1> &v){
     return out;
 }
 
+template <typename T1, typename T2>
+auto progress_bar(T1 N, T2 progress){
+    string str="[";
+    for(int i=1;i<=10;i++){
+        if(i*10<(double)progress/N*100)str+='*';
+        else str+='.';
+    }
+    str+=']';
+    str+='(';
+    str+=to_string(progress);
+    str+='/';
+    str+=to_string(N);
+    str+=")";
+    return str;
+}
+
 // //파싱
 // // template <typename T1>
 // auto string_pasing(string a) -> decltype(vector<string>) {
