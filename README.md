@@ -9,6 +9,7 @@ only using vector, iostream lib
     - coordinate
     - auto coordinate for NN (insert Bias Unit automatically)
     - exponential
+    - convolution (3d, 2d + stride)
   - Activation function
     - sigmoid
     - ReLU
