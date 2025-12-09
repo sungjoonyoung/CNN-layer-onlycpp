@@ -53,5 +53,6 @@ auto convolution_2D(vector<vector<T1>> &X, vector<vector<T2>> &filter,int stride
             answer[i/stride].push_back(tmp/N);
         }
     }
+    // cout<<X.size()<<"A"<<X[0].size()<<"A";
     return answer;
 }

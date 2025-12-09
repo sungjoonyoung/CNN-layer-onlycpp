@@ -108,7 +108,7 @@ BMP loadBMP(ifstream& fin){
     return bmp;
 }
 
-vector<vector<vector<double>>> image_func(ifstream& fin){
+vector<vector<double>> image_func(ifstream& fin){
     
     auto bmp = loadBMP(fin);
 
@@ -123,11 +123,12 @@ vector<vector<vector<double>>> image_func(ifstream& fin){
     // 픽셀 예시 출력
     // string tmp="image_func.txt";
     // ofstream fout(tmp);
-    vector<vector<vector<double>>> answer;
+    vector<vector<double>> answer;
     for(int y=0;y<bmp.height;y++){
-        answer.push_back(vector<vector<double>>());
+        answer.push_back(vector<double>());
         for(int x=0;x<bmp.width;x++){
-            answer[y].push_back(vector<double>());
+            answer[y].resize(bmp.width);
+            // answer[y].push_back(vector<double>());
             int idx = (y*bmp.width + x) * (bmp.bpp/8);
             // unsigned int B = bmp.pixels[idx+0];
             // unsigned int G = bmp.pixels[idx+1];
@@ -140,7 +141,7 @@ vector<vector<vector<double>>> image_func(ifstream& fin){
             // fout<<(R+G+B)/(3*255)<<" ";
             // fout<<"("<<(int)R<<","<<(int)G<<","<<(int)B<<") ";
             // fout<<(int)((R+G+B)/(3*255)*100)<<" ";
-            answer[y][x].push_back((double)1-(R+G+B)/(3*255));
+            answer[y][x]=((double)1-(R+G+B)/(3*255));
         }
         // fout<<"\n";
     }
