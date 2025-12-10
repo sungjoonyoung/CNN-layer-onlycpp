@@ -141,7 +141,8 @@ vector<vector<double>> image_func(ifstream& fin){
             // fout<<(R+G+B)/(3*255)<<" ";
             // fout<<"("<<(int)R<<","<<(int)G<<","<<(int)B<<") ";
             // fout<<(int)((R+G+B)/(3*255)*100)<<" ";
-            answer[y][x]=((double)1-(R+G+B)/(3*255));
+            answer[y][x]=min(1.0,(1-(R+G+B)/(3*255))*2-1);
+            // answer[y][x]=((double)1-(R+G+B)/(3*255)*2);
         }
         // fout<<"\n";
     }
