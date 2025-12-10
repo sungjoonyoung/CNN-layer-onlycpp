@@ -46,7 +46,7 @@ auto data_to_string(vector<double> &v){
 }
 
 template <typename T1, typename T2>
-auto progress_bar(T1 N, T2 progress){
+auto progress_bar(T1 progress, T2 N){
     string str="[";
     for(int i=1;i<=10;i++){
         if(i*10<(double)progress/N*100)str+='*';

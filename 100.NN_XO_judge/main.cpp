@@ -7,5 +7,9 @@
 using namespace std;
 
 int main(void){
-    cout<<"A";
+    cout<<"A\n";
+    cout<<"A\n";
+    cout<<"\x1b[1A";
+    cout<<"\x1b[1A";
+    cout<<"B";
 }

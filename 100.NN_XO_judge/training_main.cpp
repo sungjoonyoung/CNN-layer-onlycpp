@@ -258,7 +258,7 @@ int main(void){
             ifstream fin(w_csv);
             weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
             for(int j=0;j<coordinate_data[i].size();j++){
-                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.5);//자동으로 채워주는 건데, 체크는 나중에 해 보자고~!
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.1*(rand()%6+2));//자동으로 채워주는 건데, 체크는 나중에 해 보자고~!
             }
         }
         weight_tmp=weight_data;
@@ -296,7 +296,7 @@ int main(void){
                 }
             }
         }
-        print_1D(derivative_data.back());
+        // print_1D(derivative_data.back());
         // print_2D(derivative_data);
         // weight update
         for(int i=weight_data.size()-1;i>0;i--){
@@ -322,7 +322,8 @@ int main(void){
                 fout<<data_to_string(weight_data[i][j])<<"\n";
             }
         }
-        print_1D(coordinate_data.back());
+        // print_1D(coordinate_data.back());
+        cout<<"X : "<<progress_bar(op,Xnum)<<"\r";
     }
 
 
@@ -366,7 +367,7 @@ int main(void){
             ifstream fin(w_csv);
             weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
             for(int j=0;j<coordinate_data[i].size();j++){
-                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.5);//자동으로 채워주는 건데, 체크는 나중에 해 보자고~!
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.1*(rand()%6+2));//자동으로 채워주는 건데, 체크는 나중에 해 보자고~!
             }
         }
         weight_tmp=weight_data;
@@ -404,7 +405,7 @@ int main(void){
                 }
             }
         }
-        print_1D(derivative_data.back());
+        // print_1D(derivative_data.back());
         // print_2D(derivative_data);
         // weight update
         for(int i=weight_data.size()-1;i>0;i--){
@@ -430,6 +431,7 @@ int main(void){
                 fout<<data_to_string(weight_data[i][j])<<"\n";
             }
         }
-        print_1D(coordinate_data.back());
+        // print_1D(coordinate_data.back());
+        cout<<"O : "<<progress_bar(i,Onum)<<"\r";
     }
 }
