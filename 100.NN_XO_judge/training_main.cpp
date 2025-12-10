@@ -254,8 +254,9 @@ int main(void){
         //NN
         for(int i=1;i<weight_data.size();i++){
             coordinate_data[i]=NN_coordinate(coordinate_data[i-1],weight_data[i]);
+            for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
         }
-
+        print_1D(coordinate_data.back());
         //backpropagation -> weight_tmp
 
         //scv<=weight_tmp

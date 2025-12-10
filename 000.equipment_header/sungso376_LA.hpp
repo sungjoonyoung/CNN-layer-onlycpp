@@ -28,20 +28,20 @@ auto inner_product(vector<T1>& a, vector<T2>& b) -> decltype(a[0] * b[0]){
     return norm;
 }
 
-//coordinate
-template <typename T1, typename T2>
-auto coordinate(vector<T1>& a, vector<vector<T2>>& basis)->vector<decltype(a[0]*basis[0][0])>{ // 디클레어 이거 맞나? 몰라
+// //coordinate
+// template <typename T1, typename T2>
+// auto coordinate(vector<T1>& a, vector<vector<T2>>& basis)->vector<decltype(a[0]*basis[0][0])>{ // 디클레어 이거 맞나? 몰라
 
-    using ResultType = vector<decltype(a[0]*basis[0][0])>;
-    ResultType answer;
-    using ElementType = decltype(a[0]*basis[0][0]);
-    for(int i=0;i<basis.size();i++){
-        ElementType tmp;
-        tmp=inner_product(a,basis[i]);
-        answer.push_back(tmp);
-    }
-    return answer;
-}
+//     using ResultType = vector<decltype(a[0]*basis[0][0])>;
+//     ResultType answer;
+//     using ElementType = decltype(a[0]*basis[0][0]);
+//     for(int i=0;i<basis.size();i++){
+//         ElementType tmp;
+//         tmp=inner_product(a,basis[i]);
+//         answer.push_back(tmp);
+//     }
+//     return answer;
+// }
 
 /*
 NN-coordinate just vector&basis
