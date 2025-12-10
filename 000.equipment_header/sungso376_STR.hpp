@@ -31,12 +31,16 @@ auto string_pasing(string &a, int max_size=2'000'000'000) {
 }
 
 // vector{xx,xxx,x} -> "xx,xxx,x"
-template <typename T1>
-auto data_to_string(vector<T1> &v){
+// template <typename T1>
+auto data_to_string(vector<double> &v){
     string out = "";
+    char buf[64];
     for(auto s:v){
-        out+=to_string(s);
-        out+=",";
+        // out+=to_string(s);
+        // out+=",";
+        sprintf(buf, "%.15f",s); // 소수점 15자리
+        out += buf;
+        out += ",";
     }
     return out;
 }
