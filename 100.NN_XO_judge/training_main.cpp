@@ -216,8 +216,8 @@ double learning_rate=0.9;
 int main(void){
     cout<<"\n";
     int Onum,Xnum;
-    Xnum=3;
-    Onum=3;
+    Xnum=180;
+    Onum=180;
     /*
     X
     */
@@ -242,11 +242,11 @@ int main(void){
         coordinate_data[2].resize(24);
         coordinate_data[3].resize(2);
 
-        for(int i=0;i<1;i++){
-            for(int j=0;j<coordinate_data[i].size();j++)
-                cout<<(int)(coordinate_data[i][j]*10000)<<" ";
-            cout<<"\n";
-        }
+        // for(int i=0;i<1;i++){
+        //     for(int j=0;j<coordinate_data[i].size();j++)
+        //         cout<<(int)(coordinate_data[i][j]*10000)<<" ";
+        //     cout<<"\n";
+        // }
         
         /*
         NN
@@ -351,11 +351,11 @@ int main(void){
         coordinate_data[2].resize(24);
         coordinate_data[3].resize(2);
 
-        for(int i=0;i<1;i++){
-            for(int j=0;j<coordinate_data[i].size();j++)
-                cout<<(int)(coordinate_data[i][j]*10000)<<" ";
-            cout<<"\n";
-        }
+        // for(int i=0;i<1;i++){
+        //     for(int j=0;j<coordinate_data[i].size();j++)
+        //         cout<<(int)(coordinate_data[i][j]*10000)<<" ";
+        //     cout<<"\n";
+        // }
         
         /*
         NN
@@ -432,6 +432,6 @@ int main(void){
             }
         }
         // print_1D(coordinate_data.back());
-        cout<<"O : "<<progress_bar(i,Onum)<<"\r";
+        cout<<"O : "<<progress_bar(op,Onum)<<"\r";
     }
 }
