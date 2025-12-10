@@ -248,6 +248,9 @@ int main(void){
             string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
             ifstream fin(w_csv);
             weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
+            for(int j=0;j<coordinate_data[i].size();j++){
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.5);//자동으로 채워주는 건데, 체크는 나중에 해 보자고~!
+            }
         }
         weight_tmp=weight_data;
 
@@ -256,7 +259,7 @@ int main(void){
             coordinate_data[i]=NN_coordinate(coordinate_data[i-1],weight_data[i]);
             for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
         }
-        print_1D(coordinate_data.back());
+        
         //backpropagation -> weight_tmp
 
         //scv<=weight_tmp

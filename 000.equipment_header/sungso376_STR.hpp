@@ -84,7 +84,7 @@ auto read_filter_2D(ifstream &fin,int N,int M, int D=1){
         string str;fin>>str;
         auto tmp=string_pasing(str,M);
         filter.push_back(vector<double>());
-        for(auto s:tmp)filter[i].push_back(stod(s));
+        for(auto s:tmp)if(s!="")filter[i].push_back(stof(s));
     }
     return filter;
 }
