@@ -7,14 +7,14 @@
 #include"sungso376_LA.hpp"
 #include<sungso376_image.hpp>
 using namespace std;
-void print_con(vector<vector<vector<double>>> X){
+void print_3D(vector<vector<vector<double>>> X){
     for(int i=0;i<X.size();i++){
+        cout<<"["<<i<<"]-----------\n";
         for(int j=0;j<X[i].size();j++){
             for(int k=0;k<X[i][j].size();k++)
                 cout<<(int)(X[i][j][k]*100)<<" ";
             cout<<"\n";
         }
-        cout<<"--------------------\n";
     }
     cout<<"--------------------\n";
 }
@@ -35,7 +35,7 @@ auto conv_function(string image){
         ifstream fin(image, ios::binary);
         con_data.push_back(image_func(fin));        
     }
-    print_con(con_data);
+    // print_3D(con_data);
     /*
     ## 1 ##
     */
@@ -56,7 +56,7 @@ auto conv_function(string image){
         ifstream fin("layer/Xshape0.csv");
         filter_data=read_filter_2D(fin,3,3);
         con_tmp.push_back(convolution_2D(con_data[0],filter_data));
-        // print_con(con_tmp);
+        // print_3D(con_tmp);
     }
     //activation function
     for(int i=0;i<con_tmp.size();i++){
@@ -67,7 +67,7 @@ auto conv_function(string image){
     }
     //paste
     con_data=con_tmp;
-    print_con(con_data);
+    // print_3D(con_data);
     
 
     /*
@@ -89,7 +89,7 @@ auto conv_function(string image){
         ifstream fin("layer/Xshape.csv");
         filter_data=read_filter_2D(fin,3,3);
         con_tmp.push_back(convolution_2D(con_data[2],filter_data));
-        // print_con(con_tmp);
+        // print_3D(con_tmp);
     }
     //activation function
     for(int i=0;i<con_tmp.size();i++){
@@ -100,7 +100,7 @@ auto conv_function(string image){
     }
     //paste
     con_data=con_tmp;
-    print_con(con_data);
+    // print_3D(con_data);
     
 
     /*
@@ -115,13 +115,13 @@ auto conv_function(string image){
     }
     {
         con_tmp.push_back(maxpulling_2D(con_data[2],3,3,3));
-        // print_con(con_tmp);
+        // print_3D(con_tmp);
     }
     //activation function
 
     //paste
     con_data=con_tmp;
-    print_con(con_data);
+    // print_3D(con_data);
 
     /*
     ## 3 ##
@@ -142,7 +142,7 @@ auto conv_function(string image){
         ifstream fin("layer/Xshape.csv");
         filter_data=read_filter_2D(fin,3,3);
         con_tmp.push_back(convolution_2D(con_data[2],filter_data));
-        // print_con(con_tmp);
+        // print_3D(con_tmp);
     }
     //activation function
     for(int i=0;i<con_tmp.size();i++){
@@ -153,7 +153,7 @@ auto conv_function(string image){
     }
     //paste
     con_data=con_tmp;
-    print_con(con_data);
+    // print_3D(con_data);
 
 
     /*
@@ -168,13 +168,13 @@ auto conv_function(string image){
     }
     {
         con_tmp.push_back(maxpulling_2D(con_data[2],2,2,2));
-        // print_con(con_tmp);
+        // print_3D(con_tmp);
     }
     //activation function
 
     //paste
     con_data=con_tmp;
-    print_con(con_data);
+    // print_3D(con_data);
 
     /*
     Final
@@ -196,9 +196,8 @@ auto conv_function(string image){
 
 
 
-
-
 int main(void){
+    cout<<"\n";
     for(int op=1;op<2;op++){
         vector<vector<double>> coordinate_data;
         /*
