@@ -11,8 +11,10 @@ void print_3D(vector<vector<vector<double>>> X){
     for(int i=0;i<X.size();i++){
         cout<<"["<<i<<"]-----------\n";
         for(int j=0;j<X[i].size();j++){
-            for(int k=0;k<X[i][j].size();k++)
+            for(int k=0;k<X[i][j].size();k++){
+                cout<<"0.";
                 cout<<(int)(X[i][j][k]*100)<<" ";
+            }
             cout<<"\n";
         }
     }
@@ -21,8 +23,10 @@ void print_3D(vector<vector<vector<double>>> X){
 void print_2D(vector<vector<double>> X){
     cout<<"\n";
     for(int j=0;j<X.size();j++){
-        for(int k=0;k<X[j].size();k++)
+        for(int k=0;k<X[j].size();k++){
+            cout<<"0.";
             cout<<(X[j][k]*100)<<" ";
+        }
         cout<<"\n";
     }
     cout<<"--------------------\n";
@@ -200,6 +204,7 @@ vector<vector<vector<double>>> weight_tmp;
 vector<vector<double>> coordinate_data;
 int main(void){
     cout<<"\n";
+    double learning_rate=0.1;
     /*
     X
     */
@@ -207,25 +212,41 @@ int main(void){
         weight_data.clear();
         weight_tmp.clear();
         coordinate_data.clear();
+
+        weight_data.resize(4); // initial(no wight) + hiden *2 + output
+        coordinate_data.resize(4);
+
         /*
         convolution
         */
         string image="dataset/X/X ("+to_string(op)+").bmp";
-        coordinate_data.push_back(conv_function(image));            
         
+        coordinate_data[0]=conv_function(image);
+        coordinate_data[1].resize(24); //numbers of nodes
+        coordinate_data[2].resize(24);
+        coordinate_data[3].resize(2);
+        coordinate_data[3]={1,0};
+
         for(int i=0;i<1;i++){
             for(int j=0;j<coordinate_data[i].size();j++)
                 cout<<(int)(coordinate_data[i][j]*10000)<<" ";
             cout<<"\n";
         }
+        
         /*
         NN
         */
-        weight_data.push_back(vector<vector<double>>()); // corasponding index with coordinate_data
-        //read csv -> weight_data
         
+        //read csv -> weight_data
+        for(int i=1;i<weight_data.size();i++){
+            string w_csv ="weight_layer/weight ("+to_string(op)+").csv";
+            ifstream fin(w_csv);
+            weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
+        }
+        print_3D(weight_data);
         //NN
 
+        
         //backpropagation -> weight_tmp
 
         //scv<=weight_tmp
