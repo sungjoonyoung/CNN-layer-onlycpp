@@ -243,7 +243,8 @@ int main(void){
             ifstream fin(w_csv);
             weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
         }
-        print_3D(weight_data);
+        weight_tmp=weight_data;
+        
         //NN
 
         
