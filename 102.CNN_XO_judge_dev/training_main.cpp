@@ -42,8 +42,8 @@ void print_2D(vector<vector<double>> &X){
     cout<<"--------------------\n";
 }
 
-int layer_number=4;
-int hidden_node_number[]={24,24,24};
+int layer_number=3;
+int hidden_node_number[]={30,30,24};
 int output_number=2;
 double learning_rate=0.01;
 
@@ -59,7 +59,7 @@ int main(void){
     cout<<"\n";
     Xnum=720;
     Onum=720;
-    for(int i=0;i<1'000;i++){
+    for(int i=0;i<1;i++){
         cout<<"iteration : "<<i<<"\n";
         int Xind=1;
         int Oind=1;
@@ -129,11 +129,15 @@ void Ofunc(int op){
                 if(i==weight_data.size()-1){
                     while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.0004+0.01*(rand()%10));
                 }
+                else if(i==weight_data.size()-2){
+                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00001*(rand()%10));
+                }
                 else{
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.0001*(rand()%10));
+                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00000001*(rand()%10));
                 }
             }
         }
+
 
         //NN
         for(int i=1;i<weight_data.size();i++){
@@ -242,8 +246,11 @@ void Xfunc(int op){
                 if(i==weight_data.size()-1){
                     while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.0004+0.01*(rand()%10));
                 }
+                else if(i==weight_data.size()-2){
+                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00001*(rand()%10));
+                }
                 else{
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.0001*(rand()%10));
+                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00000001*(rand()%10));
                 }
             }
         }

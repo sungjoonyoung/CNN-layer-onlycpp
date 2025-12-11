@@ -42,8 +42,8 @@ void print_2D(vector<vector<double>> &X){
     cout<<"--------------------\n";
 }
 
-int layer_number=4;
-int hidden_node_number[]={24,24,24};
+int layer_number=3;
+int hidden_node_number[]={30,30,24};
 int output_number=2;
 
 
@@ -71,7 +71,7 @@ int main(void){
             coordinate_data[i+1].resize(hidden_node_number[i]);
         }
         coordinate_data[layer_number-1].resize(output_number);
-        // cout<<coordinate_data[0].size()<<"\n";
+
         // for(int i=0;i<1;i++){
         //     for(int j=0;j<coordinate_data[i].size();j++)
         //         cout<<(int)(coordinate_data[i][j]*10000)<<" ";
