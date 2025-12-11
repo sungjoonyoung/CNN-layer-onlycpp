@@ -1,7 +1,11 @@
 
 # CNN-layer-onlycpp
 
-only using vector, iostream lib
+only using vector, iofstream lib
+
+
+https://github.com/user-attachments/assets/bfcac4c6-f056-47aa-aa8c-09154ffc547b
+
 
 - [homemade header](https://github.com/sungjoonyoung/CNN-layer-onlycpp/tree/main/000.equipment_header)
   - Linear Algebra
