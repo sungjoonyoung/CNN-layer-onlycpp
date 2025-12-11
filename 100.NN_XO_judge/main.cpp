@@ -54,7 +54,7 @@ vector<vector<double>> coordinate_data;
 vector<vector<double>> derivative_data;
 int main(void){
     cout<<"\n";
-    while(1){
+    for(int i=0;;i++){
         weight_data.clear();
         coordinate_data.clear();
 
@@ -97,6 +97,8 @@ int main(void){
             coordinate_data[i]=NN_coordinate(coordinate_data[i-1],weight_data[i]);
             for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
         }
+
+        /*
         cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         // print_1D(coordinate_data.back());
         double X=coordinate_data.back()[0];
@@ -109,6 +111,31 @@ int main(void){
         // cout<<Xl<<" "<<Ol<<"\n";
         cout<<"X : "<<percentage_bar(X/(X+O),1)<<"\n";
         cout<<"O : "<<percentage_bar(O/(X+O),1)<<"\n";
+        // cout<<"\x1b[1A";
+        // cout<<"\x1b[1A";
+        // cout<<"\x1b[1A";
+        // cout<<"\x1b[1A";
+        for(int i=0;i<100'000'000;i++);
+    }
+        */
+        
+        // print_1D(coordinate_data.back());
+        double X=coordinate_data.back()[0];
+        double O=coordinate_data.back()[1];
+        long long Xl=X*1000000000000;
+        long long Ol=O*1000000000000;
+        // Xl%=10000000000;
+        // Ol%=10000000000;
+
+        int n=i%4;
+        string roading="\\|/-";
+        cout<<roading[n];
+
+        cout<<"answer : "<<((X>O)?"X":"O")<<"   ";
+        // cout<<Xl<<" "<<Ol<<"\n";
+        cout<<"X : "<<percentage_bar(X/(X+O),1)<<"   ";
+        cout<<"O : "<<percentage_bar(O/(X+O),1)<<"   ";
+        cout<<"\r";
         // cout<<"\x1b[1A";
         // cout<<"\x1b[1A";
         // cout<<"\x1b[1A";

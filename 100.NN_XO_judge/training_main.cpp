@@ -45,7 +45,7 @@ void print_2D(vector<vector<double>> &X){
 int layer_number=3;
 int hidden_node_number[]={50,50,23,4};
 int output_number=2;
-double learning_rate=0.01;
+double learning_rate=0.00;
 
 
 vector<vector<vector<double>>> weight_data;
@@ -59,7 +59,7 @@ int main(void){
     cout<<"\n";
     Xnum=720;
     Onum=720;
-    for(int i=0;i<100;i++){
+    for(int i=0;;i++){
         cout<<i<<"\n";
         int Xind=1;
         int Oind=1;
