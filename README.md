@@ -1,5 +1,5 @@
 
-# CNN-layer-onlycpp
+# CNN-layer-onlyCPP
 
 only using vector, iofstream lib
 
@@ -13,25 +13,17 @@ https://github.com/user-attachments/assets/bfcac4c6-f056-47aa-aa8c-09154ffc547b
     - coordinate
     - auto coordinate for NN (insert Bias Unit automatically)
     - exponential
-    - convolution (3d, 2d + stride)
   - Activation function
     - sigmoid
     - ReLU
     - derivative
+  - CNN
+    - convolution (3d, 2d + stride)
+    - pulling
   - String (for data pasing)
-    - string "x,xx,x" -> vector{x,xx,x}
-    - vector{xx,xxx,x} -> "xx,xxx,x"
-    - node vector reader
-    - filter reader (3d, 2d)
+  - Image
   
 
-- (ing) [XO-judge](https://github.com/sungjoonyoung/CNN-layer-onlycpp/tree/main/100.NN_XO_judge)
-  - dataset
-    - X
-    - O
-    - BMP -> txt
-  - layer
-    - for Node Vectors
-    - for Convolution Matrix
+- [XO-judge](https://github.com/sungjoonyoung/CNN-layer-onlycpp/tree/main/100.NN_XO_judge)
   - main
   - traning main
