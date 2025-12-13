@@ -23,8 +23,9 @@ https://github.com/user-attachments/assets/bfcac4c6-f056-47aa-aa8c-09154ffc547b
   - String (for data pasing)
   - Image
 
-  
 - [XO-judge-more CNN convolution](https://github.com/sungjoonyoung/CNN-layer-onlyCPP/tree/main/102.CNN_XO_judge_dev)
 - [XO-judge](https://github.com/sungjoonyoung/CNN-layer-onlycpp/tree/main/100.NN_XO_judge)
   - main
   - traning main
+    - backpropagation
+  - convolution header
