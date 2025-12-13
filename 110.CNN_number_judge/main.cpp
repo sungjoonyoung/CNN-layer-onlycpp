@@ -42,10 +42,9 @@ void print_2D(vector<vector<double>> &X){
     cout<<"--------------------\n";
 }
 
-int layer_number=3;
-int hidden_node_number[]={30,30,24};
-int output_number=2;
-
+int layer_number=3;//레이어가 몇 개? x = 1+hidden+1
+int hidden_node_number[]={200};
+int output_number=10; //아웃풋의 노드가 몇 개?
 
 
 vector<vector<vector<double>>> weight_data;
@@ -98,49 +97,27 @@ int main(void){
             for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
         }
 
-        /*
-        cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        // print_1D(coordinate_data.back());
-        double X=coordinate_data.back()[0];
-        double O=coordinate_data.back()[1];
-        long long Xl=X*1000000000000;
-        long long Ol=O*1000000000000;
-        // Xl%=10000000000;
-        // Ol%=10000000000;
-        cout<<"answer : "<<((X>O)?"X":"O")<<"\n";
-        // cout<<Xl<<" "<<Ol<<"\n";
-        cout<<"X : "<<percentage_bar(X/(X+O),1)<<"\n";
-        cout<<"O : "<<percentage_bar(O/(X+O),1)<<"\n";
-        // cout<<"\x1b[1A";
-        // cout<<"\x1b[1A";
-        // cout<<"\x1b[1A";
-        // cout<<"\x1b[1A";
-        for(int i=0;i<100'000'000;i++);
-    }
-        */
-        
-        // print_1D(coordinate_data.back());
-        double X=coordinate_data.back()[0];
-        double O=coordinate_data.back()[1];
-        long long Xl=X*1000000000000;
-        long long Ol=O*1000000000000;
-        // Xl%=10000000000;
-        // Ol%=10000000000;
 
         int n=i%4;
         string roading="\\|/-";
-        cout<<roading[n];
+        cout<<roading[n]<<"\n";
+        double maxnum=-1;
+        double maxind=-1;
+        double sumnum=0;
+        for(int j=0;j<100;j++)cout<<"\n";
+        for(int j=0;j<10;j++){
+            if(maxnum<coordinate_data.back()[j]){
+                maxnum=coordinate_data.back()[j];
+                maxind=j;
+            }
+            sumnum+=coordinate_data.back()[j];
+        }
+        cout<<"answer : "<<maxind<<"\n";
+        for(int j=0;j<10;j++){
+            cout<<j<<" : "<<percentage_bar(coordinate_data.back()[j]/sumnum,1)<<"\n";
+        }
 
-        cout<<"answer : "<<((X>O)?"X":"O")<<"   ";
-        // cout<<Xl<<" "<<Ol<<"\n";
-        cout<<"X : "<<percentage_bar(X/(X+O),1)<<"   ";
-        cout<<"O : "<<percentage_bar(O/(X+O),1)<<"   ";
-        cout<<"\r";
-        // cout<<"\x1b[1A";
-        // cout<<"\x1b[1A";
-        // cout<<"\x1b[1A";
-        // cout<<"\x1b[1A";
-        for(int i=0;i<100'000'000;i++);
+        for(int j=0;j<100'000'000;j++);
     }
     
 }

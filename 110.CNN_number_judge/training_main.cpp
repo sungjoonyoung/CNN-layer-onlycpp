@@ -42,278 +42,158 @@ void print_2D(vector<vector<double>> &X){
     cout<<"--------------------\n";
 }
 
-int layer_number=3;
-int hidden_node_number[]={30,30,24};
-int output_number=2;
-double learning_rate=0.01;
-
+int layer_number=3;//레이어가 몇 개? x = 1+hidden+1
+int hidden_node_number[]={200};
+int output_number=10; //아웃풋의 노드가 몇 개?
+double learning_rate=0.005;
+double seed_out=0.0004;
+double seed_hid=0.00001;
+int iteration_train=1'000'000'000;
 
 vector<vector<vector<double>>> weight_data;
 vector<vector<vector<double>>> weight_tmp;
 vector<vector<double>> coordinate_data;
 vector<vector<double>> derivative_data;
-int Onum,Xnum;
-void Ofunc(int op);
-void Xfunc(int op);
+void func(int op,int num);
 int main(void){
-    cout<<"\n";
-    Xnum=720;
-    Onum=720;
-    for(int i=0;i<1;i++){
-        cout<<"iteration : "<<i<<"\n";
-        int Xind=1;
-        int Oind=1;
-        while(Xind<=Xnum and Oind<=Xnum){
-            if(Xind==Xnum and Oind==Xnum)break;
-            int r=rand()%2;
-            if(r){//X
-                if(Xind==Xnum)Ofunc(Oind++);
-                else Xfunc(Xind++);
+    for(int i=0;i<iteration_train;i++){
+        vector<int> cnt(10,0);
+        vector<int> max_cnt(10,480);
+        int man=10*480;
+        while(man){
+            int op=rand()%10;
+            if(cnt[op]==max_cnt[op])continue;
+            func(op,cnt[op]);
+            cnt[op]++;
+            
+            for(int j=0;j<50;j++)cout<<endl; //for window
+            cout<<"\r                                                                                              ";
+            cout<<"\riteration : "<<i<<"\n";
+            for(int j=0;j<10;j++){
+                cout<<"\r"<<j<<" : "<<progress_bar(cnt[j],max_cnt[j])<<"\n";
             }
-            else{//O
-                if(Oind==Onum)Xfunc(Xind++);
-                else Ofunc(Oind++);
-            }
-            cout<<"X : "<<progress_bar(Xind,Onum)<<"\n";
-            cout<<"O : "<<progress_bar(Oind,Onum)<<"\n";
-            cout<<"\x1b[1A";
-            cout<<"\x1b[1A";
+            // for(int j=0;j<11;j++){ //for rinux like terminal
+            //     cout<<"\x1b[1A";
+            // }
+            man--;
         }
         cout<<"\x1b[1A";
     }
     
 }
 
-void Ofunc(int op){
+void func(int op,int num){
+    weight_data.clear();
+    weight_tmp.clear();
+    coordinate_data.clear();
+    derivative_data.clear();
+
+    weight_data.resize(layer_number); // initial(no wight) + hiden *2 + output
+    coordinate_data.resize(layer_number);
+    derivative_data.resize(layer_number);
+    vector<double> correct_output(10,0);
+    correct_output[op]=1;
+
     /*
-    O
+    convolution
     */
-    // for(int op=1;op<=Onum;op++){
-        weight_data.clear();
-        weight_tmp.clear();
-        coordinate_data.clear();
-        derivative_data.clear();
+    string image="dataset/"+to_string(op)+"/k ("+to_string(num+1)+").bmp";
+    // cout<<image<<"\n";
+    
+    coordinate_data[0]=conv_function(image);
+    for(int i=0;i<layer_number-2;i++){
+        coordinate_data[i+1].resize(hidden_node_number[i]);
+    }
+    coordinate_data[layer_number-1].resize(output_number);
+    // cout<<"numbers of first layer"<<coordinate_data[0].size()<<"\n";
 
-        weight_data.resize(layer_number); // initial(no wight) + hiden *2 + output
-        coordinate_data.resize(layer_number);
-        derivative_data.resize(layer_number);
-        vector<double> correct_output={0,1};
-
-        /*
-        convolution
-        */
-        string image="dataset/O/O ("+to_string(op)+").bmp";
-        
-        coordinate_data[0]=conv_function(image);
-        for(int i=0;i<layer_number-2;i++){
-            coordinate_data[i+1].resize(hidden_node_number[i]);
+    // for(int i=0;i<1;i++){
+    //     for(int j=0;j<coordinate_data[i].size();j++)
+    //         cout<<(int)(coordinate_data[i][j]*10000)<<" ";
+    //     cout<<"\n";
+    // }
+    
+    /*
+    NN
+    */
+    
+    //read csv -> weight_data
+    for(int i=1;i<weight_data.size();i++){
+        string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
+        ifstream fin(w_csv);
+        weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
+        for(int j=0;j<coordinate_data[i].size();j++){
+            if(i==weight_data.size()-1){
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(seed_out+seed_out/4*(rand()%10));
+            }
+            else if(i==weight_data.size()-2){
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(seed_hid*(rand()%10));
+            }
+            else{
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00000001*(rand()%10));
+            }
         }
-        coordinate_data[layer_number-1].resize(output_number);
+    }
 
-        // for(int i=0;i<1;i++){
-        //     for(int j=0;j<coordinate_data[i].size();j++)
-        //         cout<<(int)(coordinate_data[i][j]*10000)<<" ";
-        //     cout<<"\n";
-        // }
-        
-        /*
-        NN
-        */
-        
-        //read csv -> weight_data
-        for(int i=1;i<weight_data.size();i++){
-            string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
-            ifstream fin(w_csv);
-            weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
-            for(int j=0;j<coordinate_data[i].size();j++){
-                if(i==weight_data.size()-1){
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.0004+0.01*(rand()%10));
-                }
-                else if(i==weight_data.size()-2){
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00001*(rand()%10));
+    //NN
+    for(int i=1;i<weight_data.size();i++){
+        coordinate_data[i]=NN_coordinate(coordinate_data[i-1],weight_data[i]);
+        for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+    }
+    // print_1D(coordinate_data.back());
+
+    
+
+    /*
+    backpropagation
+    */
+    for(int i=0;i<derivative_data.size();i++)derivative_data[i].resize(coordinate_data[i].size());
+    //output layer's derivative sum
+    for(int i=0;i<correct_output.size();i++){
+        derivative_data.back()[i]=correct_output[i]-coordinate_data.back()[i];
+    }
+    //derivative sum
+    for(int i=derivative_data.size()-1;i>=0;i--){
+        // 현재 도착했을 때는 h(1-h) 를 해주고 -> derivative sum 완성!
+        for(int j=0;j<derivative_data[i].size();j++){
+            double x=coordinate_data[i][j];
+            // derivative_data[i][j]*=x*(1-x);
+            if (i!=derivative_data.size()-1)derivative_data[i][j]*=x*(1-x); // 이거 스킵했는데, 그 이유 정확하게 알아야 댐
+        }
+        // 그리고 뒤로 쏴주자
+        if(i==0)break;
+        for(int j=0;j<derivative_data[i].size();j++){
+            double delta=derivative_data[i][j];
+            for(int k=1;k<weight_data[i][j].size();k++){ //skip bias delta (dont need, but 나중에 update 해야해 ㅠㅠ)
+                double w=weight_data[i][j][k];
+                derivative_data[i-1][k-1]+=w*delta;
+            }
+        }
+    }
+    // print_1D(derivative_data.back());
+    // print_2D(derivative_data);
+    // weight update
+    for(int i=weight_data.size()-1;i>0;i--){
+        for(int j=0;j<weight_data[i].size();j++){
+            double delta=derivative_data[i][j];
+            for(int k=0;k<weight_data[i][j].size();k++){
+                if(k==0){//bias
+                    weight_data[i][j][k]+=learning_rate*delta;
                 }
                 else{
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00000001*(rand()%10));
+                    weight_data[i][j][k]+=learning_rate*delta*coordinate_data[i-1][k-1];
                 }
             }
         }
+    }
+    // print_3D(weight_data);
 
-
-        //NN
-        for(int i=1;i<weight_data.size();i++){
-            coordinate_data[i]=NN_coordinate(coordinate_data[i-1],weight_data[i]);
-            for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+    //scv<=weight_tmp
+    for(int i=1;i<weight_data.size();i++){
+        string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
+        ofstream fout(w_csv);
+        for(int j=0;j<weight_data[i].size();j++){
+            fout<<data_to_string(weight_data[i][j])<<"\n";
         }
-        // print_1D(coordinate_data.back());
-        
-
-        /*
-        backpropagation
-        */
-        for(int i=0;i<derivative_data.size();i++)derivative_data[i].resize(coordinate_data[i].size());
-        //output layer's derivative sum
-        for(int i=0;i<correct_output.size();i++){
-            derivative_data.back()[i]=correct_output[i]-coordinate_data.back()[i];
-        }
-        //derivative sum
-        for(int i=derivative_data.size()-1;i>=0;i--){
-            // 현재 도착했을 때는 h(1-h) 를 해주고 -> derivative sum 완성!
-            for(int j=0;j<derivative_data[i].size();j++){
-                double x=coordinate_data[i][j];
-                derivative_data[i][j]*=x*(1-x);
-            }
-            // 그리고 뒤로 쏴주자
-            if(i==0)break;
-            for(int j=0;j<derivative_data[i].size();j++){
-                double delta=derivative_data[i][j];
-                for(int k=1;k<weight_data[i][j].size();k++){ //skip bias delta (dont need, but 나중에 update 해야해 ㅠㅠ)
-                    double w=weight_data[i][j][k];
-                    derivative_data[i-1][k-1]+=w*delta;
-                }
-            }
-        }
-        // print_1D(derivative_data.back());
-        // print_2D(derivative_data);
-        // weight update
-        for(int i=weight_data.size()-1;i>0;i--){
-            for(int j=0;j<weight_data[i].size();j++){
-                double delta=derivative_data[i][j];
-                for(int k=0;k<weight_data[i][j].size();k++){
-                    if(k==0){//bias
-                        weight_data[i][j][k]+=learning_rate*delta;
-                    }
-                    else{
-                        weight_data[i][j][k]+=learning_rate*delta*coordinate_data[i-1][k-1];
-                    }
-                }
-            }
-        }
-        // print_3D(weight_data);
-
-        //scv<=weight_tmp
-        for(int i=1;i<weight_data.size();i++){
-            string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
-            ofstream fout(w_csv);
-            for(int j=0;j<weight_data[i].size();j++){
-                fout<<data_to_string(weight_data[i][j])<<"\n";
-            }
-        }
-        // print_1D(coordinate_data.back());
-    // }
-}
-void Xfunc(int op){
-    /*
-    X
-    */
-    // for(int op=1;op<=Xnum;op++){
-        weight_data.clear();
-        weight_tmp.clear();
-        coordinate_data.clear();
-        derivative_data.clear();
-
-        weight_data.resize(layer_number); // initial(no wight) + hiden *2 + output
-        coordinate_data.resize(layer_number);
-        derivative_data.resize(layer_number);
-        vector<double> correct_output={1,0};
-
-        /*
-        convolution
-        */
-        string image="dataset/X/X ("+to_string(op)+").bmp";
-        
-        coordinate_data[0]=conv_function(image);
-        for(int i=0;i<layer_number-2;i++){
-            coordinate_data[i+1].resize(hidden_node_number[i]);
-        }
-        coordinate_data[layer_number-1].resize(output_number);
-
-        // for(int i=0;i<1;i++){
-        //     for(int j=0;j<coordinate_data[i].size();j++)
-        //         cout<<(int)(coordinate_data[i][j]*10000)<<" ";
-        //     cout<<"\n";
-        // }
-        
-        /*
-        NN
-        */
-        
-        //read csv -> weight_data
-        for(int i=1;i<weight_data.size();i++){
-            string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
-            ifstream fin(w_csv);
-            weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
-            for(int j=0;j<coordinate_data[i].size();j++){
-                if(i==weight_data.size()-1){
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.0004+0.01*(rand()%10));
-                }
-                else if(i==weight_data.size()-2){
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00001*(rand()%10));
-                }
-                else{
-                    while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)weight_data[i][j].push_back(0.00000001*(rand()%10));
-                }
-            }
-        }
-
-        //NN
-        for(int i=1;i<weight_data.size();i++){
-            coordinate_data[i]=NN_coordinate(coordinate_data[i-1],weight_data[i]);
-            for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
-        }
-        // print_1D(coordinate_data.back());
-        
-
-        /*
-        backpropagation
-        */
-        for(int i=0;i<derivative_data.size();i++)derivative_data[i].resize(coordinate_data[i].size());
-        //output layer's derivative sum
-        for(int i=0;i<correct_output.size();i++){
-            derivative_data.back()[i]=correct_output[i]-coordinate_data.back()[i];
-        }
-        //derivative sum
-        for(int i=derivative_data.size()-1;i>=0;i--){
-            // 현재 도착했을 때는 h(1-h) 를 해주고 -> derivative sum 완성!
-            for(int j=0;j<derivative_data[i].size();j++){
-                double x=coordinate_data[i][j];
-                derivative_data[i][j]*=x*(1-x);
-            }
-            // 그리고 뒤로 쏴주자
-            if(i==0)break;
-            for(int j=0;j<derivative_data[i].size();j++){
-                double delta=derivative_data[i][j];
-                for(int k=1;k<weight_data[i][j].size();k++){ //skip bias delta (dont need, but 나중에 update 해야해 ㅠㅠ)
-                    double w=weight_data[i][j][k];
-                    derivative_data[i-1][k-1]+=w*delta;
-                }
-            }
-        }
-        // print_1D(derivative_data.back());
-        // print_2D(derivative_data);
-        // weight update
-        for(int i=weight_data.size()-1;i>0;i--){
-            for(int j=0;j<weight_data[i].size();j++){
-                double delta=derivative_data[i][j];
-                for(int k=0;k<weight_data[i][j].size();k++){
-                    if(k==0){//bias
-                        weight_data[i][j][k]+=learning_rate*delta;
-                    }
-                    else{
-                        weight_data[i][j][k]+=learning_rate*delta*coordinate_data[i-1][k-1];
-                    }
-                }
-            }
-        }
-        // print_3D(weight_data);
-
-        //scv<=weight_tmp
-        for(int i=1;i<weight_data.size();i++){
-            string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
-            ofstream fout(w_csv);
-            for(int j=0;j<weight_data[i].size();j++){
-                fout<<data_to_string(weight_data[i][j])<<"\n";
-            }
-        }
-        // print_1D(coordinate_data.back());
-    // }
+    }
 }

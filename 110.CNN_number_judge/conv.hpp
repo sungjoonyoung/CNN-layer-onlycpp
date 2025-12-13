@@ -35,7 +35,13 @@ auto conv_function(string image){
         // print_2D(filter_data);
     }
     {
-        ifstream fin("filter_layer/Xshape0.csv");
+        ifstream fin("filter_layer/x0.csv");
+        filter_data=read_filter_2D(fin,3,3);
+        con_tmp.push_back(convolution_2D(con_data[0],filter_data));
+        // print_3D(con_tmp);
+    }
+    {
+        ifstream fin("filter_layer/y0.csv");
         filter_data=read_filter_2D(fin,3,3);
         con_tmp.push_back(convolution_2D(con_data[0],filter_data));
         // print_3D(con_tmp);
@@ -66,11 +72,18 @@ auto conv_function(string image){
         ifstream fin("filter_layer/y=-x0.csv");
         filter_data=read_filter_2D(fin,3,3);
         con_tmp.push_back(convolution_2D(con_data[1],filter_data));
+        // print_2D(filter_data);
     }
     {
-        ifstream fin("filter_layer/Xshape0.csv");
+        ifstream fin("filter_layer/x0.csv");
         filter_data=read_filter_2D(fin,3,3);
         con_tmp.push_back(convolution_2D(con_data[2],filter_data));
+        // print_3D(con_tmp);
+    }
+    {
+        ifstream fin("filter_layer/y0.csv");
+        filter_data=read_filter_2D(fin,3,3);
+        con_tmp.push_back(convolution_2D(con_data[3],filter_data));
         // print_3D(con_tmp);
     }
     //activation function
@@ -89,71 +102,64 @@ auto conv_function(string image){
     ## 2.1 ## pooling
     */
     con_tmp.clear();
-    {
-        con_tmp.push_back(maxpulling_2D(con_data[0],3,3,3));
-    }
-    {
-        con_tmp.push_back(maxpulling_2D(con_data[1],3,3,3));
-    }
-    {
-        con_tmp.push_back(maxpulling_2D(con_data[2],3,3,3));
-        // print_3D(con_tmp);
+    for(int i=0;i<con_data.size();i++){
+        con_tmp.push_back(maxpulling_2D(con_data[i],3,3,3));
     }
     //activation function
 
     //paste
     con_data=con_tmp;
 
-    /*
-    ## 3 ##
-    */
-    //conv
-    con_tmp.clear();
-    {
-        ifstream fin("filter_layer/y=x0.csv");
-        filter_data=read_filter_2D(fin,3,3);
-        con_tmp.push_back(convolution_2D(con_data[0],filter_data));
-    }
-    {
-        ifstream fin("filter_layer/y=-x0.csv");
-        filter_data=read_filter_2D(fin,3,3);
-        con_tmp.push_back(convolution_2D(con_data[1],filter_data));
-    }
-    {
-        ifstream fin("filter_layer/Xshape0.csv");
-        filter_data=read_filter_2D(fin,3,3);
-        con_tmp.push_back(convolution_2D(con_data[2],filter_data));
-        // print_3D(con_tmp);
-    }
-    //activation function
-    for(int i=0;i<con_tmp.size();i++){
-        for(int j=0;j<con_tmp[i].size();j++){
-            for(int k=0;k<con_tmp[i][j].size();k++)
-                con_tmp[i][j][k]=ReLU(con_tmp[i][j][k]);
-        }
-    }
-    //paste
-    con_data=con_tmp;
+    // /*
+    // ## 3 ##
+    // */
+    // //conv
+    // con_tmp.clear();
+    // {
+    //     ifstream fin("filter_layer/y=x0.csv");
+    //     filter_data=read_filter_2D(fin,3,3);
+    //     con_tmp.push_back(convolution_2D(con_data[0],filter_data));
+    // }
+    // {
+    //     ifstream fin("filter_layer/y=-x0.csv");
+    //     filter_data=read_filter_2D(fin,3,3);
+    //     con_tmp.push_back(convolution_2D(con_data[1],filter_data));
+    //     // print_2D(filter_data);
+    // }
+    // {
+    //     ifstream fin("filter_layer/x0.csv");
+    //     filter_data=read_filter_2D(fin,3,3);
+    //     con_tmp.push_back(convolution_2D(con_data[2],filter_data));
+    //     // print_3D(con_tmp);
+    // }
+    // {
+    //     ifstream fin("filter_layer/y0.csv");
+    //     filter_data=read_filter_2D(fin,3,3);
+    //     con_tmp.push_back(convolution_2D(con_data[3],filter_data));
+    //     // print_3D(con_tmp);
+    // }
+    // //activation function
+    // for(int i=0;i<con_tmp.size();i++){
+    //     for(int j=0;j<con_tmp[i].size();j++){
+    //         for(int k=0;k<con_tmp[i][j].size();k++)
+    //             con_tmp[i][j][k]=ReLU(con_tmp[i][j][k]);
+    //     }
+    // }
+    // //paste
+    // con_data=con_tmp;
 
 
-    /*
-    ## 3.1 ## pooling
-    */
-    con_tmp.clear();
-    {
-        con_tmp.push_back(maxpulling_2D(con_data[0],2,2,2));
-    }
-    {
-        con_tmp.push_back(maxpulling_2D(con_data[1],2,2,2));
-    }
-    {
-        con_tmp.push_back(maxpulling_2D(con_data[2],2,2,2));
-        // print_3D(con_tmp);
-    }
-    //activation function
+    // /*
+    // ## 3.1 ## pooling
+    // */
+    // con_tmp.clear();
+    // for(int i=0;i<con_data.size();i++){
+    //     con_tmp.push_back(maxpulling_2D(con_data[i],2,2,2));
+    // }
+    // //activation function
 
-    //paste
-    con_data=con_tmp;
+    // //paste
+    // con_data=con_tmp;
 
     /*
     Final
@@ -165,7 +171,7 @@ auto conv_function(string image){
     for(int i=0;i<con_data.size();i++){
         for(int j=0;j<con_data[i].size();j++){
             for(int k=0;k<con_data[i][j].size();k++)
-                out.push_back(con_data[i][j][k]*100);
+                out.push_back(con_data[i][j][k]);
         }
     }
     return out;
