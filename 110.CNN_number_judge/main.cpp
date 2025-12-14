@@ -108,7 +108,7 @@ int main(void){
         cout<<roading[n]<<"\n";
         double maxnum=-1;
         double maxind=-1;
-        double sumnum=0;
+        long double sumnum=0;
         for(int j=0;j<100;j++)cout<<"\n";
         for(int j=0;j<10;j++){
             if(maxnum<coordinate_data.back()[j]){

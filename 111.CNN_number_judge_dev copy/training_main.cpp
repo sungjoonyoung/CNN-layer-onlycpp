@@ -49,6 +49,8 @@ double learning_rate=0.01;
 double seed_out=0.0005;
 double seed_hid=0.001;
 int iteration_train=1'000'000'000;
+int man=0;
+ofstream Lossfout("Loss.txt");
 
 vector<vector<vector<double>>> weight_data;
 vector<vector<vector<double>>> weight_tmp;
@@ -56,10 +58,13 @@ vector<vector<double>> coordinate_data;
 vector<vector<double>> derivative_data;
 void func(int op,int num);
 int main(void){
+    Lossfout.clear();
     for(int i=0;i<iteration_train;i++){
+        Lossfout<<"iteration : "<<i<<"\n";
+        Lossfout.flush();
         vector<int> cnt(10,0);
         vector<int> max_cnt(10,480);
-        int man=10*480;
+        man=10*480;
         while(man){
             int op=rand()%10;
             if(cnt[op]==max_cnt[op])continue;
@@ -206,5 +211,13 @@ void func(int op,int num){
         for(int j=0;j<weight_data[i].size();j++){
             fout<<data_to_string(weight_data[i][j])<<"\n";
         }
+    }
+
+    //loss
+    double loss=0;
+    if(man%20==0){
+        for(int i=0;i<10;i++)loss+=0.5*(correct_output[i]-sftmax_vector[i])*(correct_output[i]-sftmax_vector[i]);
+        Lossfout<<"Loss : "<<loss<<"\n";
+        Lossfout.flush();
     }
 }

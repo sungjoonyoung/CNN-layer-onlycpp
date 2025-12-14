@@ -102,7 +102,7 @@ int main(void){
                     for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
                 }
             }
-            double sumnum=0;
+            long double sumnum=0;
             for(int j=0;j<10;j++){
                 sumnum+=coordinate_data.back()[j];
             }
