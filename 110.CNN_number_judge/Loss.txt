@@ -1,2 +1,9 @@
+learning rate : 0.001
+iteration_train : 100
+seed_out : 0.005
+seed_hid : 0.01
 iteration : 0
-Loss : 0.444627
+Loss : 0.450344
+Loss : 0.449909
+Loss : 0.450532
+Loss : 0.450937

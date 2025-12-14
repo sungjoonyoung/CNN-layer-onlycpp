@@ -46,10 +46,11 @@ int layer_number=3;//레이어가 몇 개? x = 1+hidden+1
 int hidden_node_number[]={200};
 int output_number=10; //아웃풋의 노드가 몇 개?
 double learning_rate=0.01;
-double seed_out=0.0005;
-double seed_hid=0.001;
+double seed_out=0.005;
+double seed_hid=0.01;
 int iteration_train=1'000'000'000;
 int man=0;
+double loss=0;
 ofstream Lossfout("Loss.txt");
 
 vector<vector<vector<double>>> weight_data;
@@ -59,6 +60,56 @@ vector<vector<double>> derivative_data;
 void func(int op,int num);
 int main(void){
     Lossfout.clear();
+    cout<<"\n\n\nlearning rate? : ";cin>>learning_rate;
+    Lossfout<<"learning rate : "<<learning_rate<<"\n";
+    cout<<"iteration? : ";cin>>iteration_train;
+    Lossfout<<"iteration_train : "<<iteration_train<<"\n";
+    cout<<"seed_out? : ";cin>>seed_out;
+    Lossfout<<"seed_out : "<<seed_out<<"\n";
+    cout<<"seed_hid? : ";cin>>seed_hid;
+    Lossfout<<"seed_hid : "<<seed_hid<<"\n";
+    Lossfout.flush();
+    coordinate_data.clear();
+    derivative_data.clear();
+
+    
+    coordinate_data.resize(layer_number);
+    derivative_data.resize(layer_number);
+
+    /*
+    convolution
+    */
+    string image="dataset/"+to_string(0)+"/k ("+to_string(0+1)+").bmp"; //아무거나
+    // cout<<image<<"\n";
+    
+    coordinate_data[0]=conv_function(image);
+    for(int i=0;i<layer_number-2;i++){
+        coordinate_data[i+1].resize(hidden_node_number[i]);
+    }
+    coordinate_data[layer_number-1].resize(output_number);
+
+    //read csv -> weight_data
+    weight_data.resize(layer_number); // initial(no wight) + hiden *2 + output
+
+
+    for(int i=1;i<weight_data.size();i++){
+        string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
+        ifstream fin(w_csv);
+        weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
+        for(int j=0;j<coordinate_data[i].size();j++){
+            if(i==weight_data.size()-1){
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)
+                    weight_data[i][j].push_back(seed_out*((rand()%2001 - 1000) / 1000.0));
+            }
+            else{
+                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)
+                    weight_data[i][j].push_back(seed_hid*((rand()%2001 - 1000) / 1000.0));
+            }
+        }
+    }
+
+
+
     for(int i=0;i<iteration_train;i++){
         Lossfout<<"iteration : "<<i<<"\n";
         Lossfout.flush();
@@ -84,16 +135,16 @@ int main(void){
         }
         cout<<"\x1b[1A";
     }
-    
+    cout<<loss;
 }
 
 void func(int op,int num){
-    weight_data.clear();
-    weight_tmp.clear();
+    // weight_data.clear();
+    // weight_tmp.clear();
     coordinate_data.clear();
     derivative_data.clear();
 
-    weight_data.resize(layer_number); // initial(no wight) + hiden *2 + output
+    
     coordinate_data.resize(layer_number);
     derivative_data.resize(layer_number);
     vector<double> correct_output(10,0);
@@ -123,22 +174,7 @@ void func(int op,int num){
     NN
     */
     
-    //read csv -> weight_data
-    for(int i=1;i<weight_data.size();i++){
-        string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
-        ifstream fin(w_csv);
-        weight_data[i]=read_filter_2D(fin,coordinate_data[i].size(),coordinate_data[i-1].size()+1);
-        for(int j=0;j<coordinate_data[i].size();j++){
-            if(i==weight_data.size()-1){
-                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)
-                    weight_data[i][j].push_back(seed_out*((rand()%2001 - 1000) / 1000.0));
-            }
-            else{
-                while(weight_data[i][j].size()!=coordinate_data[i-1].size()+1)
-                    weight_data[i][j].push_back(seed_hid*((rand()%2001 - 1000) / 1000.0));
-            }
-        }
-    }
+    
 
     //NN
     for(int i=1;i<weight_data.size();i++){
@@ -147,7 +183,8 @@ void func(int op,int num){
             for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=ReLU(coordinate_data[i][j]);
         }
         else{ // 나머지는 시그모이드
-            for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+            // for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+            continue;
         }
     }
     
@@ -158,7 +195,10 @@ void func(int op,int num){
     /*
     backpropagation
     */
-    for(int i=0;i<derivative_data.size();i++)derivative_data[i].resize(coordinate_data[i].size());
+    for(int i=0;i<derivative_data.size();i++){
+        derivative_data[i].clear();
+        derivative_data[i].resize(coordinate_data[i].size(),0.0);
+    }
     //output layer's derivative sum
     for(int i=0;i<correct_output.size();i++){
         derivative_data.back()[i]=correct_output[i]-sftmax_vector[i];
@@ -205,16 +245,17 @@ void func(int op,int num){
     // print_3D(weight_data);
 
     //scv<=weight_tmp
-    for(int i=1;i<weight_data.size();i++){
-        string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
-        ofstream fout(w_csv);
-        for(int j=0;j<weight_data[i].size();j++){
-            fout<<data_to_string(weight_data[i][j])<<"\n";
+    if(man%1000==0){
+        for(int i=1;i<weight_data.size();i++){
+            string w_csv ="weight_layer/weight ("+to_string(i)+").csv";
+            ofstream fout(w_csv);
+            for(int j=0;j<weight_data[i].size();j++){
+                fout<<data_to_string(weight_data[i][j])<<"\n";
+            }
         }
     }
-
     //loss
-    double loss=0;
+    loss=0;
     if(man%20==0){
         for(int i=0;i<10;i++)loss+=0.5*(correct_output[i]-sftmax_vector[i])*(correct_output[i]-sftmax_vector[i]);
         Lossfout<<"Loss : "<<loss<<"\n";
