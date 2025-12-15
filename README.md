@@ -29,7 +29,7 @@ https://github.com/user-attachments/assets/bfcac4c6-f056-47aa-aa8c-09154ffc547b
   - String (for data pasing)
   - Image
 
-- [number_judge](https://github.com/sungjoonyoung/CNN-layer-onlyCPP/tree/main/210.only_NN_number_judge)
+- [number_judge](https://github.com/sungjoonyoung/CNN-layer-onlyCPP/tree/main/200.CNN_number_judge%20rand)
   - main.cpp / .exe
   - traning main.cpp / .exe
     - backpropagation
