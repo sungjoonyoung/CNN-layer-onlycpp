@@ -98,10 +98,15 @@ int main(void){
                 for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=ReLU(coordinate_data[i][j]);
             }
             else{ // 나머지는 시그모이드
-                for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+                // for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+                continue;
             }
         }
 
+        //softmax
+        vector<double> sftmax_vector=sotfmax(coordinate_data.back());
+        // print_1D(sftmax_vector);
+        coordinate_data.back()=sftmax_vector;
 
         int n=i%4;
         string roading="\\|/-";

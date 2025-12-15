@@ -8,39 +8,6 @@
 #include<sungso376_image.hpp>
 #include"conv.hpp"
 using namespace std;
-void print_1D(vector<double> &X){
-    cout<<"\n";
-    for(int j=0;j<X.size();j++){
-        cout<<X[j]<<" ";
-    }
-    cout<<"\n--------------------\n";
-}
-void print_3D(vector<vector<vector<double>>> &X){
-    for(int i=0;i<X.size();i++){
-        cout<<"["<<i<<"]-----------\n";
-        for(int j=0;j<X[i].size();j++){
-            for(int k=0;k<X[i][j].size();k++){
-                // cout<<"0.";
-                // cout<<(int)(X[i][j][k]*100)<<" ";
-                cout<<X[i][j][k]<<" ";
-            }
-            cout<<"\n";
-        }
-    }
-    cout<<"--------------------\n";
-}
-void print_2D(vector<vector<double>> &X){
-    cout<<"\n";
-    for(int j=0;j<X.size();j++){
-        for(int k=0;k<X[j].size();k++){
-            // cout<<"0.";
-            // cout<<(X[j][k]*100)<<" ";
-            cout<<X[j][k]<<" ";
-        }
-        cout<<"\n";
-    }
-    cout<<"--------------------\n";
-}
 
 int layer_number=3;//레이어가 몇 개? x = 1+hidden+1
 int hidden_node_number[]={200};
@@ -99,9 +66,16 @@ int main(void){
                     for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=ReLU(coordinate_data[i][j]);
                 }
                 else{ // 나머지는 시그모이드
-                    for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+                    // for(int j=0;j<coordinate_data[i].size();j++)coordinate_data[i][j]=sigmoid(coordinate_data[i][j]);
+                    continue;
                 }
             }
+
+            //softmax
+            vector<double> sftmax_vector=sotfmax(coordinate_data.back());
+            // print_1D(sftmax_vector);
+
+            coordinate_data.back()=sftmax_vector;
             long double sumnum=0;
             for(int j=0;j<10;j++){
                 sumnum+=coordinate_data.back()[j];
